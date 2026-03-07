@@ -145,6 +145,12 @@ text-decoration:none;
 font-weight:600;
 }
 
+.sources{
+margin-top:10px;
+font-size:12px;
+opacity:0.7;
+}
+
 </style>
 </head>
 
@@ -198,7 +204,7 @@ font-weight:600;
 
 <div class="card">
 <h3>Mining Difficulty</h3>
-<div class="mid" id="difficulty">--</div>
+<div class="mid" id="difficulty">Loading...</div>
 </div>
 
 </div>
@@ -307,6 +313,10 @@ For deeper cryptocurrency education, Bitcoin cycle analysis, and long-term marke
 powered by <strong>cryptokita</strong>
 </p>
 
+<div class="sources">
+Data sources: CoinGecko | mempool.space | Blockchain.com
+</div>
+
 </div>
 
 </div>
@@ -412,12 +422,22 @@ h.toFixed(2)+" EH/s";
 
 async function updateDifficulty(){
 
+try{
+
 const r = await fetch("https://mempool.space/api/v1/difficulty-adjustment");
 
 const d = await r.json();
 
+const difficulty = d.difficulty || 0;
+
 document.getElementById("difficulty").innerText =
-(d.currentDifficulty/1000000000000).toFixed(2)+" T";
+(difficulty/1000000000000).toFixed(2)+" T";
+
+}catch{
+
+document.getElementById("difficulty").innerText="Loading...";
+
+}
 
 }
 
