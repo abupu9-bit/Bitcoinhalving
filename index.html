@@ -12,145 +12,11 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
+<!-- MGID Loader -->
+<script src="https://jsc.mgid.com/site/1084425.js" async></script>
+
 <style>
-
-body{
-font-family:Inter,sans-serif;
-background:linear-gradient(180deg,#081421,#0c1f34);
-color:white;
-margin:0;
-padding:30px;
-}
-
-.container{
-max-width:1200px;
-margin:auto;
-}
-
-.title{
-text-align:center;
-font-size:38px;
-font-weight:700;
-margin-bottom:30px;
-}
-
-.title span{
-color:#f7931a;
-}
-
-.grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-gap:20px;
-}
-
-.card{
-background:#13263c;
-padding:25px;
-border-radius:10px;
-text-align:center;
-}
-
-.card h3{
-margin:0 0 10px 0;
-color:#9bb8d3;
-}
-
-.mid{
-font-size:26px;
-font-weight:600;
-}
-
-.big{
-font-size:40px;
-font-weight:700;
-color:#f7931a;
-}
-
-.progress-section{
-margin-top:35px;
-background:#13263c;
-padding:25px;
-border-radius:10px;
-}
-
-.progress-bar{
-background:#1e3a57;
-height:18px;
-border-radius:10px;
-overflow:hidden;
-margin-top:15px;
-}
-
-.progress{
-height:100%;
-width:0%;
-background:#f7931a;
-}
-
-.chart-section{
-margin-top:40px;
-background:#13263c;
-padding:30px;
-border-radius:10px;
-}
-
-.table-section{
-margin-top:40px;
-background:#13263c;
-padding:30px;
-border-radius:10px;
-}
-
-table{
-width:100%;
-border-collapse:collapse;
-}
-
-th,td{
-padding:10px;
-border-bottom:1px solid #2a4a6a;
-text-align:center;
-}
-
-th{
-color:#9bb8d3;
-}
-
-.share{
-text-align:center;
-margin-top:40px;
-}
-
-.share a{
-background:#f7931a;
-color:white;
-padding:12px 20px;
-border-radius:6px;
-text-decoration:none;
-font-weight:600;
-}
-
-.footer{
-text-align:center;
-margin-top:50px;
-padding:25px;
-background:#13263c;
-border-radius:10px;
-}
-
-.footer a{
-color:#f7931a;
-text-decoration:none;
-font-weight:600;
-}
-
-.sources{
-margin-top:10px;
-font-size:12px;
-opacity:0.7;
-}
-
+/* CSS kamu tetap sama */
 </style>
 </head>
 
@@ -209,6 +75,17 @@ opacity:0.7;
 
 </div>
 
+
+<!-- MGID In Article -->
+<div style="margin-top:40px;">
+<div data-type="_mgwidget" data-widget-id="1972295"></div>
+<script>
+(function(w,q){w[q]=w[q]||[];w[q].push(["_mgc.load"])})
+(window,"_mgq");
+</script>
+</div>
+
+
 <div class="progress-section">
 
 <h3 style="text-align:center;">Halving Progress</h3>
@@ -246,7 +123,6 @@ opacity:0.7;
 <h3 style="text-align:center">Bitcoin Halving History</h3>
 
 <table>
-
 <tr>
 <th>Halving</th>
 <th>Date</th>
@@ -288,7 +164,6 @@ opacity:0.7;
 <td>1,050,000</td>
 <td>3.125 → 1.5625 BTC</td>
 </tr>
-
 </table>
 
 </div>
@@ -298,6 +173,17 @@ opacity:0.7;
 Share This Halving Tool on X
 </a>
 </div>
+
+
+<!-- MGID Under Article -->
+<div style="margin-top:40px;">
+<div data-type="_mgwidget" data-widget-id="1972296"></div>
+<script>
+(function(w,q){w[q]=w[q]||[];w[q].push(["_mgc.load"])})
+(window,"_mgq");
+</script>
+</div>
+
 
 <div class="footer">
 
@@ -323,156 +209,7 @@ Data sources: CoinGecko | mempool.space | Blockchain.com
 
 <script>
 
-const HALVING_INTERVAL = 210000;
-const AVG_BLOCK_TIME = 10;
-const MAX_SUPPLY = 21000000;
-
-let halvingTimestamp = 0;
-
-async function updateHalving(){
-
-const res = await fetch("https://mempool.space/api/blocks/tip/height");
-const height = parseInt(await res.text());
-
-document.getElementById("blockHeight").innerText = height.toLocaleString();
-
-const nextHalving = Math.ceil(height / HALVING_INTERVAL) * HALVING_INTERVAL;
-
-const remaining = nextHalving - height;
-
-document.getElementById("blocksRemaining").innerText = remaining.toLocaleString();
-
-const progress = ((HALVING_INTERVAL - remaining) / HALVING_INTERVAL) * 100;
-
-document.getElementById("progressBar").style.width = progress + "%";
-
-document.getElementById("progressText").innerText = progress.toFixed(2) + "% to Halving";
-
-const minutesRemaining = remaining * AVG_BLOCK_TIME;
-
-const halvingDate = new Date(Date.now() + minutesRemaining * 60000);
-
-halvingTimestamp = halvingDate.getTime();
-
-document.getElementById("halvingDate").innerText = halvingDate.toDateString();
-
-}
-
-function updateCountdown(){
-
-if(!halvingTimestamp) return;
-
-const diff = halvingTimestamp - Date.now();
-
-const days = Math.floor(diff / (1000*60*60*24));
-const hours = Math.floor(diff / (1000*60*60) % 24);
-const minutes = Math.floor(diff / (1000*60) % 60);
-
-document.getElementById("countdown").innerText =
-days+"d "+hours+"h "+minutes+"m";
-
-}
-
-async function updatePrice(){
-
-const r = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd,idr");
-
-const d = await r.json();
-
-document.getElementById("btcPrice").innerText =
-"$"+d.bitcoin.usd.toLocaleString();
-
-document.getElementById("btcPriceIDR").innerText =
-"Rp"+d.bitcoin.idr.toLocaleString();
-
-}
-
-async function updateSupply(){
-
-const res = await fetch("https://blockchain.info/q/totalbc");
-
-const sat = parseInt(await res.text());
-
-const btc = sat/100000000;
-
-document.getElementById("btcSupply").innerText =
-btc.toLocaleString(undefined,{maximumFractionDigits:0})+" BTC";
-
-const percent = (btc / MAX_SUPPLY) * 100;
-
-document.getElementById("supplyBar").style.width = percent+"%";
-
-document.getElementById("supplyText").innerText =
-percent.toFixed(2)+"% of 21M mined";
-
-}
-
-async function updateNetwork(){
-
-const r = await fetch("https://mempool.space/api/v1/mining/hashrate/1d");
-
-const d = await r.json();
-
-const h = d.currentHashrate/1000000000000000000;
-
-document.getElementById("hashrate").innerText =
-h.toFixed(2)+" EH/s";
-
-}
-
-async function updateDifficulty(){
-
-try{
-
-const r = await fetch("https://mempool.space/api/v1/difficulty-adjustment");
-
-const d = await r.json();
-
-const difficulty = d.difficulty || 0;
-
-document.getElementById("difficulty").innerText =
-(difficulty/1000000000000).toFixed(2)+" T";
-
-}catch{
-
-document.getElementById("difficulty").innerText="Loading...";
-
-}
-
-}
-
-updateHalving();
-updatePrice();
-updateSupply();
-updateNetwork();
-updateDifficulty();
-
-setInterval(updateHalving,60000);
-setInterval(updatePrice,60000);
-setInterval(updateSupply,60000);
-setInterval(updateNetwork,60000);
-setInterval(updateDifficulty,60000);
-setInterval(updateCountdown,1000);
-
-const ctx = document.getElementById('halvingChart');
-
-new Chart(ctx,{
-type:'bar',
-data:{
-labels:['2012','2016','2020','2024'],
-datasets:[{
-label:'1 Year ROI After Halving (%)',
-data:[9000,300,550,200],
-}]
-}
-});
-
-const shareText = encodeURIComponent(
-"Track the Bitcoin Halving Countdown in real time."
-);
-
-document.getElementById("shareBtn").href =
-"https://twitter.com/intent/tweet?text="+shareText+"&url="+location.href;
+/* Semua JS kamu tetap sama */
 
 </script>
 
